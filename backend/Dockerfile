@@ -1,8 +1,10 @@
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
     git curl libpq-dev libzip-dev zip unzip \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    libpng-dev libjpeg-dev libfreetype6-dev libonig-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql zip gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
